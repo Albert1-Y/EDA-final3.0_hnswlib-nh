@@ -34,7 +34,7 @@ def build_index(vectors, alpha=0.0):
     n, dim = vectors.shape
     idx = hnswlib.Index(space="l2", dim=dim)
     idx.init_index(max_elements=n, ef_construction=200, M=16)
-    ef = 400 if alpha > 0.0 and alpha < 1.0 else 200
+    ef = 400 if alpha > 0 else 200
     idx.set_ef(ef)
     idx.alpha = alpha
     print(f"Indexing {n} vectors (dim={dim}, ef={ef}, alpha={alpha})...", end=" ", flush=True)
@@ -81,8 +81,11 @@ def main():
     parser = argparse.ArgumentParser(description="Test hnswlib_nh with dataset")
     parser.add_argument("--all", action="store_true", help="Run all 1000 queries")
     parser.add_argument("--recall", action="store_true", help="Compute recall against ground_truth")
-    parser.add_argument("--alpha", type=float, default=0.0, help="Set alpha parameter (default: 0.0)")
+    parser.add_argument("--alpha", type=float, default=0.0, help="Alpha parameter (default: 0.0=rango util [1.0, 2.0])")
     args = parser.parse_args()
+    if args.alpha > 0.0 and args.alpha < 1.0:
+        print(f"Warning: alpha={args.alpha} es muy restrictivo en 300d. Usando alpha=1.0")
+        args.alpha = 1.0
 
     vectors, queries, ground_truth = load_dataset()
     print(f"Vectors: {vectors.shape}, Queries: {queries.shape}")
