@@ -69,14 +69,22 @@ python -c "import hnswlib; idx = hnswlib.Index('l2', 300); print('alpha por defe
 pip install chromadb==1.5.9
 ```
 
-ChromaDB usa `import hnswlib` en tiempo de ejecución. Como el fork ya está instalado como `chroma-hnswlib` → `hnswlib`, ChromaDB lo carga automáticamente. Para verificar:
+ChromaDB usa `import hnswlib` en tiempo de ejecución. Como el fork ya está instalado como `chroma-hnswlib` → `hnswlib`, ChromaDB lo carga automáticamente.
+
+**Verificación con dataset real** (ejecutar después del paso 5):
 
 ```bash
-python -c "
-import chromadb, hnswlib
-print('ChromaDB:', chromadb.__version__)
-print('hnswlib tiene alpha:', hasattr(hnswlib.Index('l2', 3), 'alpha'))
-"
+python scripts/test_chromadb.py
+```
+
+Salida esperada (~71K vectores, 200 queries):
+```
+Vectores: (71097, 300), Queries: (1000, 300)
+Inserción: 7.9s
+200 queries en 0.098s (0.49ms avg)
+Recall@10: 0.8890
+alpha expuesto: True
+OK
 ```
 
 ---
