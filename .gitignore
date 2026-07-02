@@ -16,3 +16,6 @@ __pycache__/
 
 dataset/1990-w.npy
 dataset/vectors_clean.npy
+
+dataset/ground_truth.npy
+dataset/queries.npy
