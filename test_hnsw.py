@@ -34,9 +34,10 @@ def build_index(vectors, alpha=0.0):
     n, dim = vectors.shape
     idx = hnswlib.Index(space="l2", dim=dim)
     idx.init_index(max_elements=n, ef_construction=200, M=16)
-    idx.set_ef(100)
+    ef = 400 if alpha > 0.0 and alpha < 1.0 else 200
+    idx.set_ef(ef)
     idx.alpha = alpha
-    print(f"Indexing {n} vectors (dim={dim})...", end=" ", flush=True)
+    print(f"Indexing {n} vectors (dim={dim}, ef={ef}, alpha={alpha})...", end=" ", flush=True)
     t0 = time.perf_counter()
     idx.add_items(vectors)
     t1 = time.perf_counter()
