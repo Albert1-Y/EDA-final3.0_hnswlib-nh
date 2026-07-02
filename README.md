@@ -2,7 +2,6 @@
 
 Este proyecto contiene:
 - **`hnswlib_nh/`** — fork de `chroma-hnswlib` (v0.7.6) con el parámetro **α** (alpha) para poda adaptativa en la búsqueda.
-- **`dataset/`** — vectors_clean.npy (71,097 × 300), queries.npy (1,000 × 300), ground_truth.npy, etc.
 - **Script de prueba** — `test_hnsw.py` para verificar integración con ChromaDB o con hnswlib directo.
 
 ---
@@ -58,15 +57,39 @@ cd ..
 
 **Verificar instalación:**
 
-```powershell
+```bash
 python -c "import hnswlib; idx = hnswlib.Index('l2', 300); print('alpha por defecto:', idx.alpha)"
 ```
 
 ---
 
-## 3. Probar con el dataset
+## 3. Descargar dataset
 
-Primero descarga el dataset (ver paso 4), luego:
+```bash
+pip install gdown
+python scripts/download_dataset.py
+```
+
+Esto crea `dataset/1990-w.npy` (228 MB) desde Google Drive.
+
+---
+
+## 4. Preparar dataset
+
+Genera los archivos derivados a partir de `1990-w.npy`:
+
+```bash
+python scripts/prepare_dataset.py
+```
+
+Esto crea:
+- `dataset/vectors_clean.npy`  (71 097 × 300, L2)
+- `dataset/queries.npy`        (1 000 × 300)
+- `dataset/ground_truth.npy`   (1 000 × 10, k=10 exacto)
+
+---
+
+## 5. Probar
 
 ```bash
 python test_hnsw.py               # una sola query
@@ -77,22 +100,7 @@ python test_hnsw.py --alpha 0.5   # con alpha personalizado
 
 ---
 
-## 4. Descargar dataset
-
-```bash
-pip install gdown
-python scripts/download_dataset.py
-```
-
-Esto descarga `dataset/1990-w.npy` (228 MB) desde Google Drive. Luego genera los archivos derivados:
-
-```bash
-python scripts/prepare_dataset.py
-```
-
----
-
-## 5. Parámetro α (alpha)
+## 6. Parámetro α (alpha)
 
 Controla la poda adaptativa durante la búsqueda:
 
@@ -112,19 +120,15 @@ Ver `ALGO_PARAMS.md` en `hnswlib_nh/` para más detalles.
 
 ```
 EDA-final3.0/
-├── dataset/
-│   ├── vectors_clean.npy    # 71,097 × 300 float32
-│   ├── queries.npy          # 1,000 × 300 float32
-│   ├── ground_truth.npy     # ground truth
-│   ├── 1990-vocab.pkl
-│   └── 1990-w.npy
 ├── hnswlib_nh/              # fork de chroma-hnswlib
 │   ├── hnswlib/             # headers C++
 │   ├── src/                 # Rust FFI + bindings.cpp
 │   ├── python_bindings/     # pybind11 bindings (expone alpha)
 │   ├── setup.py
-│   ├── pyproject.toml
-│   └── hnswlib.cp310-win_amd64.pyd   # compilado pre-list
+│   └── pyproject.toml
+├── scripts/
+│   ├── download_dataset.py  # descarga 1990-w.npy desde Drive
+│   └── prepare_dataset.py   # genera vectors_clean, queries, ground_truth
 ├── test_hnsw.py
 ├── .gitignore
 └── README.md
