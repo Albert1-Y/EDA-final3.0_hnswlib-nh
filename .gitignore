@@ -19,3 +19,5 @@ dataset/vectors_clean.npy
 
 dataset/ground_truth.npy
 dataset/queries.npy
+
+dataset/
