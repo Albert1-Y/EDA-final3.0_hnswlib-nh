@@ -63,7 +63,25 @@ python -c "import hnswlib; idx = hnswlib.Index('l2', 300); print('alpha por defe
 
 ---
 
-## 3. Descargar dataset
+## 3. Instalar ChromaDB (opcional)
+
+```bash
+pip install chromadb==1.5.9
+```
+
+ChromaDB usa `import hnswlib` en tiempo de ejecución. Como tu fork ya está instalado como `chroma-hnswlib` → `hnswlib`, ChromaDB lo carga automáticamente. Para verificar:
+
+```bash
+python -c "
+import chromadb, hnswlib
+print('ChromaDB:', chromadb.__version__)
+print('hnswlib tiene alpha:', hasattr(hnswlib.Index('l2', 3), 'alpha'))
+"
+```
+
+---
+
+## 4. Descargar dataset
 
 ```bash
 pip install gdown
@@ -74,7 +92,7 @@ Esto crea `dataset/1990-w.npy` (228 MB) desde Google Drive.
 
 ---
 
-## 4. Preparar dataset
+## 5. Preparar dataset
 
 Genera los archivos derivados a partir de `1990-w.npy`:
 
@@ -89,7 +107,7 @@ Esto crea:
 
 ---
 
-## 5. Probar
+## 6. Probar
 
 ```bash
 python test_hnsw.py               # una sola query
@@ -100,7 +118,7 @@ python test_hnsw.py --alpha 0.5   # con alpha personalizado
 
 ---
 
-## 6. Parámetro α (alpha)
+## 7. Parámetro α (alpha)
 
 Controla la poda adaptativa durante la búsqueda:
 
