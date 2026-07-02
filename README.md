@@ -8,7 +8,7 @@ Este proyecto contiene:
 
 ## Sobre ChromaDB y `hnswlib`
 
-> **ChromaDB 1.5.9** usa `import hnswlib` estático (NO dinámico). El paquete pip `chroma-hnswlib` se instala como el módulo Python `hnswlib`. Tu `hnswlib_nh` expone `alpha` via `index.alpha` (getter/setter) gracias al binding en `python_bindings/bindings.cpp`.
+> **ChromaDB 1.5.9** usa `import hnswlib` estático (NO dinámico). El paquete pip `chroma-hnswlib` se instala como el módulo Python `hnswlib`. `hnswlib_nh` expone `alpha` via `index.alpha` (getter/setter) gracias al binding en `python_bindings/bindings.cpp`.
 
 ---
 
@@ -69,7 +69,7 @@ python -c "import hnswlib; idx = hnswlib.Index('l2', 300); print('alpha por defe
 pip install chromadb==1.5.9
 ```
 
-ChromaDB usa `import hnswlib` en tiempo de ejecución. Como tu fork ya está instalado como `chroma-hnswlib` → `hnswlib`, ChromaDB lo carga automáticamente. Para verificar:
+ChromaDB usa `import hnswlib` en tiempo de ejecución. Como el fork ya está instalado como `chroma-hnswlib` → `hnswlib`, ChromaDB lo carga automáticamente. Para verificar:
 
 ```bash
 python -c "
